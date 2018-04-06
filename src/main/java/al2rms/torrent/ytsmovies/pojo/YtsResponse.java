@@ -4,6 +4,15 @@ public class YtsResponse {
 
     private String status;
     private String status_message;
+    private DataYts data;
+
+    public DataYts getData() {
+        return data;
+    }
+
+    public void setData(DataYts data) {
+        this.data = data;
+    }
 
     public String getStatus() {
         return status;
