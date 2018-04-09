@@ -19,10 +19,10 @@ public class MoviesController {
     private static final Logger log = LoggerFactory.getLogger(MoviesController.class);
 
     @GetMapping()
-    public String getMovies() {
+    public YtsResponse getMovies() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<YtsResponse> response = restTemplate.exchange("https://yts.am/api/v2/list_movies.json", HttpMethod.GET, Utils.getEntity(), YtsResponse.class);
-        return response.toString();
+        return response.getBody();
     }
 
     @GetMapping("/{movieId}")
