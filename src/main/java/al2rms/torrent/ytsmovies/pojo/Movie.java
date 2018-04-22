@@ -1,13 +1,19 @@
 package al2rms.torrent.ytsmovies.pojo;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * Clase que representa una pelicula de YTS
+ *
  * @author ldosramos
  */
+@Entity
 public class Movie {
 
+    @Id
+    @GeneratedValue()
     private int id;
     private String url;
     private String imdb_code;
@@ -18,7 +24,7 @@ public class Movie {
     private int year;
     private Double rating;
     private Double runtime;
-    private String[] genres;
+//    private String[] genres;
     private String Summary;
     private String description;
     private String synopsis;
@@ -31,10 +37,9 @@ public class Movie {
     private String medium_cover_image;
     private String large_cover_image;
     private String state;
-    private List<Torrent> torrents;
+//    private List<Torrent> torrents;
     private String date_uploaded;
     private String date_uploaded_unix;
-
     public int getId() {
         return id;
     }
@@ -115,13 +120,6 @@ public class Movie {
         this.runtime = runtime;
     }
 
-    public String[] getGenres() {
-        return genres;
-    }
-
-    public void setGenres(String[] genres) {
-        this.genres = genres;
-    }
 
     public String getSummary() {
         return Summary;
@@ -211,13 +209,6 @@ public class Movie {
         this.large_cover_image = large_cover_image;
     }
 
-    public List<Torrent> getTorrents() {
-        return torrents;
-    }
-
-    public void setTorrents(List<Torrent> torrents) {
-        this.torrents = torrents;
-    }
 
     public String getDate_uploaded() {
         return date_uploaded;
