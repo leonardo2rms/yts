@@ -11,7 +11,7 @@ public class DataYts {
     private int movie_count;
     private int limit;
     private int page_number;
-    List<Movie> movies;
+    private List<Movie> movies;
 
     public int getMovie_count() {
         return movie_count;

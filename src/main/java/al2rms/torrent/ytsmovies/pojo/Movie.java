@@ -1,7 +1,7 @@
 package al2rms.torrent.ytsmovies.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -13,7 +13,6 @@ import javax.persistence.Id;
 public class Movie {
 
     @Id
-    @GeneratedValue()
     private int id;
     private String url;
     private String imdb_code;
@@ -24,9 +23,12 @@ public class Movie {
     private int year;
     private Double rating;
     private Double runtime;
-//    private String[] genres;
-    private String Summary;
-    private String description;
+    //    private String[] genres;
+    @Column( length = 100000 )
+    private String summary;
+    @Column( length = 100000 )
+    private String description_full;
+    @Column( length = 100000 )
     private String synopsis;
     private String yt_trailer_code;
     private String language;
@@ -37,9 +39,10 @@ public class Movie {
     private String medium_cover_image;
     private String large_cover_image;
     private String state;
-//    private List<Torrent> torrents;
+    //    private List<Torrent> torrents;
     private String date_uploaded;
     private String date_uploaded_unix;
+
     public int getId() {
         return id;
     }
@@ -120,21 +123,20 @@ public class Movie {
         this.runtime = runtime;
     }
 
-
     public String getSummary() {
-        return Summary;
+        return summary;
     }
 
     public void setSummary(String summary) {
-        Summary = summary;
+        this.summary = summary;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescription_full() {
+        return description_full;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription_full(String description_full) {
+        this.description_full = description_full;
     }
 
     public String getSynopsis() {
