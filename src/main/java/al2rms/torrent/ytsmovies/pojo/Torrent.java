@@ -1,16 +1,24 @@
 package al2rms.torrent.ytsmovies.pojo;
 
-public class Torrent {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class Torrent {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String url;
     private String hash;
     private String quality;
     private int seeds;
     private int peers;
     private String size;
-    private String size_bytes;
+    private Long size_bytes;
     private String date_uploaded;
-    private String date_uploaded_unix;
+    private Long date_uploaded_unix;
 
     public String getUrl() {
         return url;
@@ -60,11 +68,11 @@ public class Torrent {
         this.size = size;
     }
 
-    public String getSize_bytes() {
+    public Long getSize_bytes() {
         return size_bytes;
     }
 
-    public void setSize_bytes(String size_bytes) {
+    public void setSize_bytes(Long size_bytes) {
         this.size_bytes = size_bytes;
     }
 
@@ -76,11 +84,19 @@ public class Torrent {
         this.date_uploaded = date_uploaded;
     }
 
-    public String getDate_uploaded_unix() {
+    public Long getDate_uploaded_unix() {
         return date_uploaded_unix;
     }
 
-    public void setDate_uploaded_unix(String date_uploaded_unix) {
+    public void setDate_uploaded_unix(Long date_uploaded_unix) {
         this.date_uploaded_unix = date_uploaded_unix;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

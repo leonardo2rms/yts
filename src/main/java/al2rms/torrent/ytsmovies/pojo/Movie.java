@@ -1,8 +1,13 @@
 package al2rms.torrent.ytsmovies.pojo;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Clase que representa una pelicula de YTS
@@ -39,9 +44,19 @@ public class Movie {
     private String medium_cover_image;
     private String large_cover_image;
     private String state;
-    //    private List<Torrent> torrents;
+    @OneToMany()
+    @Cascade(CascadeType.ALL)
+    private List<Torrent> torrents;
     private String date_uploaded;
     private String date_uploaded_unix;
+
+    public List<Torrent> getTorrents() {
+        return torrents;
+    }
+
+    public void setTorrents(List<Torrent> torrents) {
+        this.torrents = torrents;
+    }
 
     public int getId() {
         return id;

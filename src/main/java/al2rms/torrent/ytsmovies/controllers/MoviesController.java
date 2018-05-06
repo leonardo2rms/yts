@@ -1,6 +1,7 @@
 package al2rms.torrent.ytsmovies.controllers;
 
 import al2rms.torrent.ytsmovies.general.utils.Utils;
+import al2rms.torrent.ytsmovies.pojo.DataYts;
 import al2rms.torrent.ytsmovies.pojo.Movie;
 import al2rms.torrent.ytsmovies.pojo.YtsResponse;
 import al2rms.torrent.ytsmovies.repositories.MovieRepositorie;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -23,8 +25,6 @@ import java.util.stream.IntStream;
 @RequestMapping("/movies")
 public class MoviesController {
 
-    private static final Logger log = LoggerFactory.getLogger(MoviesController.class);
-
     @Autowired
     MoviesService moviesService;
     @Autowired
@@ -32,18 +32,19 @@ public class MoviesController {
 
     RestTemplate restTemplate = new RestTemplate();
 
+    private static final Logger log = LoggerFactory.getLogger(MoviesController.class);
 
-    @GetMapping()
-    public YtsResponse getMovies() {
-        ResponseEntity<YtsResponse> response = restTemplate.exchange("https://yts.am/api/v2/list_movies.json", HttpMethod.GET, Utils.getEntity(), YtsResponse.class);
-        return response.getBody();
+    @GetMapping("/")
+    public YtsResponse getMovies(YtsResponse response, DataYts data) {
+        List<Movie> movies = (List<Movie>) movieRepositorie.findAll();
+        data.setMovies(movies);
+        response.setData(data);
+        return response;
     }
 
     @GetMapping("/{movieId}")
-    public String getMovie(@PathVariable String movieId) {
-        Object response = restTemplate.exchange("https://yts.am/api/v2/list_movies.json", HttpMethod.GET, Utils.getEntity(), Object.class);
-        log.info(response.toString());
-        return response.toString();
+    public Movie getMovie(@PathVariable Integer movieId) {
+        return movieRepositorie.findById(movieId).orElse(null);
     }
 
     @PostMapping()
@@ -52,17 +53,19 @@ public class MoviesController {
     }
 
     @GetMapping("/run")
-    public List<Movie> fillDatabase() {
+    public ResponseEntity<List<Movie>> fillDatabase() {
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         List<Movie> peliculasGuardadas = new ArrayList<>();
-        IntStream.range(1, 370).forEach(i -> {
+        IntStream.range(1, 300).forEach(i -> {
             executorService.execute(() -> {
                 ResponseEntity<YtsResponse> response = restTemplate.exchange("https://yts.am/api/v2/list_movies.json?page=" + i, HttpMethod.GET, Utils.getEntity(), YtsResponse.class);
-                movieRepositorie.saveAll(response.getBody().getData().getMovies());
-                System.out.println("Guardada pagina: " + i);
+                List<Movie> movies = response.getBody().getData().getMovies();
+
+                movieRepositorie.saveAll(movies);
+                log.info("Guarde la pagina " + i);
             });
         });
         movieRepositorie.findAll().forEach(peliculasGuardadas::add);
-        return peliculasGuardadas;
+        return new ResponseEntity<List<Movie>>(peliculasGuardadas, HttpStatus.OK);
     }
 }
