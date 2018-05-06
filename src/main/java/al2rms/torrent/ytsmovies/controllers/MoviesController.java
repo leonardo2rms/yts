@@ -53,7 +53,7 @@ public class MoviesController {
 
     @GetMapping("/run")
     public List<Movie> fillDatabase() {
-        ExecutorService executorService = Executors.newFixedThreadPool(40);
+        ExecutorService executorService = Executors.newFixedThreadPool(100);
         List<Movie> peliculasGuardadas = new ArrayList<>();
         IntStream.range(1, 370).forEach(i -> {
             executorService.execute(() -> {
